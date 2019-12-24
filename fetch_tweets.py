@@ -2,6 +2,8 @@
 from dotenv import load_dotenv, find_dotenv
 import os
 import math
+import time
+
 
 load_dotenv()
 load_dotenv(find_dotenv())
@@ -18,7 +20,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
-tweets = tweepy.Cursor(api.search, q='地震', lang='ja').items(100)
+tweets = tweepy.Cursor(api.search, q='??', lang='ja').items(100)
 
 import json
 from datetime import datetime
@@ -40,3 +42,4 @@ with open(filename, 'w', encoding="utf-8") as f:
 
         json.dump(dic, f, ensure_ascii=False)
         f.write('\n')
+        time.sleep(300)
