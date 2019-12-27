@@ -1,6 +1,9 @@
 #!/bin/bash
 while true; do 
  today=$(date +"%Y-%m-%d")
+
+ # yesterday = date -v -1d
+
  python fetch_tweets.py
  gsutil cp *.json gs://okada_strage/tweets/$today/
  
