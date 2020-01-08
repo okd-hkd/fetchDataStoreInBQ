@@ -61,14 +61,14 @@ with open(filename, 'w', encoding="utf-8") as f:
                'retweet_count':tweet.retweet_count,
                'favorite_count':tweet.favorite_count,
                'importance_index': importance_index,
-               'geo': ,
+               'geo': tweet.geo,
                'coordinates': tweet.coordinates,
                'place':tweet.place
                }
 
-        json.dump(dic, f, ensure_ascii=False)
+        json.dump(dic, f, indent=2, ensure_ascii=False)
         f.write('\n')
-        time.sleep(30)
+        # time.sleep(30)
 
 
 # filename = 'retweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
