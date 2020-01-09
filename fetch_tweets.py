@@ -1,5 +1,4 @@
-# coding: utf-8
-
+# coding=utf-8
 from dotenv import load_dotenv, find_dotenv
 import os
 import math
@@ -21,7 +20,7 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
-tweets = tweepy.Cursor(api.search, q='??', lang='ja').items(10)
+tweets = tweepy.Cursor(api.search, q='????', lang='ja').items(10)
 
 # Parameters:	
 
@@ -51,24 +50,24 @@ from datetime import datetime
 # Write tweets to json file.
 filename = 'tweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
 with open(filename, 'w', encoding="utf-8") as f:
-    for tweet in tweets:
-        importance_index = round(tweet.retweet_count * 1.0 + tweet.favorite_count * 0.1)
-        dic = {'text': tweet.text,
-               'date': str(tweet.created_at),
-               'id': tweet.id,
-               'user_id':tweet.user.id,
-                # 'created_at':tweet.created_at,
-               'retweet_count':tweet.retweet_count,
-               'favorite_count':tweet.favorite_count,
-               'importance_index': importance_index,
-               'geo': tweet.geo,
-               'coordinates': tweet.coordinates,
-               'place':tweet.place
-               }
+  for tweet in tweets:
+      importance_index = round(tweet.retweet_count * 1.0 + tweet.favorite_count * 0.1)
+      dic = {'text': tweet.text,
+              'date': str(tweet.created_at),
+              'id': tweet.id,
+              'user_id':tweet.user.id,
+              # 'created_at':tweet.created_at,
+              'retweet_count':tweet.retweet_count,
+              'favorite_count':tweet.favorite_count,
+              'importance_index': importance_index,
+              'geo': tweet.geo,
+              'coordinates': tweet.coordinates,
+              'place':tweet.place
+              }
 
-        json.dump(dic, f, indent=2, ensure_ascii=False)
-        f.write('\n')
-        # time.sleep(30)
+      json.dump(dic, f, indent=2, ensure_ascii=False)
+      f.write('\n')
+      # time.sleep(30)
 
 
 # filename = 'retweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
