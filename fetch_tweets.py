@@ -4,6 +4,11 @@ import os
 import math
 import time
 
+from json import JSONEncoder
+class MyEncoder(JSONEncoder):
+        def default(self, o):
+            print(o)
+            return o.__dict__  
 
 load_dotenv()
 load_dotenv(find_dotenv())
@@ -20,8 +25,15 @@ auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
-tweets = tweepy.Cursor(api.search, q='????', lang='ja').items(10)
-
+tweets = tweepy.Cursor(api.search,
+                       q='???', 
+                       lang='ja',
+                       
+                       #  geocode='latitude,longitude,radius',
+                       geocode='35.68944,139.69167,10mi', # ???geo????????????????????
+                       result_type='mixed',
+                       include_entities=True,
+                       ).items(50)
 # Parameters:	
 
 # q – the search query string of 500 characters maximum, including operators. Queries may additionally be limited by complexity.
@@ -52,22 +64,31 @@ filename = 'tweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
 with open(filename, 'w', encoding="utf-8") as f:
   for tweet in tweets:
       importance_index = round(tweet.retweet_count * 1.0 + tweet.favorite_count * 0.1)
-      dic = {'text': tweet.text,
-              'date': str(tweet.created_at),
-              'id': tweet.id,
-              'user_id':tweet.user.id,
-              # 'created_at':tweet.created_at,
-              'retweet_count':tweet.retweet_count,
-              'favorite_count':tweet.favorite_count,
-              'importance_index': importance_index,
-              'geo': tweet.geo,
-              'coordinates': tweet.coordinates,
-              'place':tweet.place
+      dic = {
+          'text': tweet.text,
+          'status_id': tweet.id,
+          'screen_name':tweet.user.screen_name,
+          'tweet_url':'https://twitter.com/{}/status/{}'.format(tweet.user.screen_name,tweet.id),
+          'source': tweet.source,
+          'date': tweet.created_at,
+          'user_id':tweet.user.id,
+          'user_name':tweet.user.name,
+          'location':tweet.user.location,
+          'followers_count':tweet.user.followers_count,
+          'profile_image':tweet.user.profile_image_url_https,
+          'retweet_count':tweet.retweet_count,
+          'favorite_count':tweet.favorite_count,
+          'importance_index': importance_index, 
+          # 'geo_coord': tweet.geo.coordinates,
+          'coordinates': tweet.coordinates,
+          'contributors':tweet.contributors,
+          'geo_enabled':tweet.user.geo_enabled,
+          'place':tweet.place
               }
 
-      json.dump(dic, f, indent=2, ensure_ascii=False)
+      json.dump(dic, f, ensure_ascii=False)
       f.write('\n')
-      # time.sleep(30)
+      time.sleep(30)
 
 
 # filename = 'retweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
