@@ -10,8 +10,7 @@ while true; do
  # load コマンドを実行すると、テーブルにデータが読み込まれる
  bq load --source_format=NEWLINE_DELIMITED_JSON twitter.fetchFromTwitterAPITable \
  gs://okada_strage/tweets/$today/`ls *.json` \
- text:STRING,status_id:INTEGER, screen_name:STRING, tweet_url:STRING,source:STRING, date_datetime:DATETIME,id:INTEGER,user_id:INTEGER,importance_index:INTEGER,retweet_count:INTEGER,favorite_count:INTEGER,geo_str:STRING,coordinates:STRING,place:STRING
- 
+ text:STRING,status_id:INTEGER,screen_name:STRING,tweet_url:STRING,source:STRING,date:STRING,id:INTEGER,user_id:INTEGER,importance_index:INTEGER,retweet_count:INTEGER,favorite_count:INTEGER,geo_str:STRING,coordinates:STRING,
  rm *.json
  sleep 5m
 done

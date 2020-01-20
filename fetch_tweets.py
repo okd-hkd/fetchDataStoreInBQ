@@ -33,11 +33,11 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 tweets = tweepy.Cursor(api.search,
-                       q='??', 
+                       q='?', 
                        lang='ja',
-                       
+
                        #  geocode='latitude,longitude,radius',
-                      #  geocode='35.68944,139.69167,10mi', # ???geo????????????????????
+                      #  geocode='s35.68944,139.69167,10mi', # ???geo????????????????????
                        result_type='popular',
                        include_entities=True,
                        ).items(50)
@@ -77,7 +77,8 @@ with open(filename, 'w', encoding="utf-8") as f:
           'screen_name':tweet.user.screen_name,
           'tweet_url':'https://twitter.com/{}/status/{}'.format(tweet.user.screen_name,tweet.id),
           'source': tweet.source,
-          'date': tweet.created_at,
+          'date': str(tweet.created_at),
+          # 'date_datetime':tweet.created_at
           'user_id':tweet.user.id,
           'user_name':tweet.user.name,
           'location':tweet.user.location,
@@ -91,28 +92,10 @@ with open(filename, 'w', encoding="utf-8") as f:
           'contributors':tweet.contributors,
           'geo_enabled':tweet.user.geo_enabled,
           # 'place':tweet.place
+
             }
         
-      # print(dic)
+      print(dic)
       json.dump(dic, f, ensure_ascii=False,default=json_serial)
       f.write('\n')
       time.sleep(3)
-
-
-# filename = 'retweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
-# with open(filename, 'w', encoding="utf-8") as f:
-#     for tweet in tweets:
-#         importance_index = round(tweet.retweet_count * 1.0 + tweet.favorite_count * 0.1)
-#         dic = {'text': tweet.text,
-#                'date': str(tweet.created_at),
-#                'id': tweet.id,
-#                'user_id':tweet.user.id,
-#                 # 'created_at':tweet.created_at,
-#                'retweet_count':tweet.retweet_count,
-#                'favorite_count':tweet.favorite_count,
-#                'importance_index': importance_index
-#                }
-
-#         json.dump(dic, f, ensure_ascii=False)
-#         f.write('\n')
-#         time.sleep(300)
