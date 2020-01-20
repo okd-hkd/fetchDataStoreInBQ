@@ -10,6 +10,13 @@ class MyEncoder(JSONEncoder):
             print(o)
             return o.__dict__  
 
+def json_serial(obj):
+    # ??????????????
+    if isinstance(obj, (datetime)):
+        return obj.isoformat()
+    # ????????????.
+    raise TypeError ("Type %s not serializable" % type(obj))
+
 load_dotenv()
 load_dotenv(find_dotenv())
 
@@ -26,12 +33,12 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 tweets = tweepy.Cursor(api.search,
-                       q='???', 
+                       q='??', 
                        lang='ja',
                        
                        #  geocode='latitude,longitude,radius',
-                       geocode='35.68944,139.69167,10mi', # ???geo????????????????????
-                       result_type='mixed',
+                      #  geocode='35.68944,139.69167,10mi', # ???geo????????????????????
+                       result_type='popular',
                        include_entities=True,
                        ).items(50)
 # Parameters:	
@@ -83,12 +90,13 @@ with open(filename, 'w', encoding="utf-8") as f:
           'coordinates': tweet.coordinates,
           'contributors':tweet.contributors,
           'geo_enabled':tweet.user.geo_enabled,
-          'place':tweet.place
-              }
-
-      json.dump(dic, f, ensure_ascii=False)
+          # 'place':tweet.place
+            }
+        
+      # print(dic)
+      json.dump(dic, f, ensure_ascii=False,default=json_serial)
       f.write('\n')
-      time.sleep(30)
+      time.sleep(3)
 
 
 # filename = 'retweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
