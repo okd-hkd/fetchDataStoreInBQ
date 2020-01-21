@@ -38,9 +38,11 @@ tweets = tweepy.Cursor(api.search,
 
                        #  geocode='latitude,longitude,radius',
                       #  geocode='s35.68944,139.69167,10mi', # ???geo????????????????????
-                       result_type='popular',
+                       result_type='recent',
                        include_entities=True,
-                       ).items(50)
+                       ).items(30)
+
+
 # Parameters:	
 
 # q – the search query string of 500 characters maximum, including operators. Queries may additionally be limited by complexity.
@@ -78,7 +80,7 @@ with open(filename, 'w', encoding="utf-8") as f:
           'tweet_url':'https://twitter.com/{}/status/{}'.format(tweet.user.screen_name,tweet.id),
           'source': tweet.source,
           'date': str(tweet.created_at),
-          # 'date_datetime':tweet.created_at
+          'date_datetime':tweet.created_at,
           'user_id':tweet.user.id,
           'user_name':tweet.user.name,
           'location':tweet.user.location,
@@ -89,7 +91,7 @@ with open(filename, 'w', encoding="utf-8") as f:
           'importance_index': importance_index, 
           # 'geo_coord': tweet.geo.coordinates,
           'coordinates': tweet.coordinates,
-          'contributors':tweet.contributors,
+          # 'contributors':tweet.contributors,
           'geo_enabled':tweet.user.geo_enabled,
           # 'place':tweet.place
 
@@ -98,4 +100,4 @@ with open(filename, 'w', encoding="utf-8") as f:
       print(dic)
       json.dump(dic, f, ensure_ascii=False,default=json_serial)
       f.write('\n')
-      time.sleep(3)
+time.sleep(180) 
