@@ -69,7 +69,7 @@ import json
 from datetime import datetime
 
 # Write tweets to json file.
-filename = 'tweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
+filename = 'search_tweets/tweets_{}.json'.format(datetime.now().strftime('%Y%m%d%H%M%S'))
 with open(filename, 'w', encoding="utf-8") as f:
   for tweet in tweets:
       importance_index = round(tweet.retweet_count * 1.0 + tweet.favorite_count * 0.1)

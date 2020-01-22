@@ -5,7 +5,9 @@ while true; do
  # yesterday = date -v -1d
 
  python fetch_tweets.py
- gsutil cp *.json gs://okada_strage/tweets/$today/
+ python fetch_trends.py
+ gsutil cp search_tweets/*.json gs://okada_strage/tweets/$today/
+ gsutil cp trends/*.json gs://okada_strage/trends/$today/
  
  # load コマンドを実行すると、テーブルにデータが読み込まれる
  bq load --source_format=NEWLINE_DELIMITED_JSON twitter.fetchFromTwitterAPITable \
@@ -29,6 +31,24 @@ geo_enabled:BOOLEAN,\
 geo_str:STRING,\
 coordinates:STRING
 
- rm *.json
- sleep 3m
+
+
+ rm search_tweets/*.json
+ 
+
+  bq load --source_format=NEWLINE_DELIMITED_JSON twitter.trends \
+ gs://okada_strage/trends/$today/`ls *.json` \
+ as_of:DATETIME,\
+created_at:DATETIME,\
+location_name:STRING,\
+location_code:INTEGER,\
+name:STRING,\
+url:STRING,\
+promoted_content:STRING,\
+query:STRING,\
+tweet_volume:INTEGER,\
+rank:INTEGER
+
+ rm trends/*.json
+#  sleep 3m
 done
